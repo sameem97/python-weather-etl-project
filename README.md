@@ -5,6 +5,7 @@ This project demonstrates a full ETL (Extract, Transform, Load) pipeline that co
 - [🌤️ ETL Weather Data Pipeline – OpenWeather API to MS SQL Server](#️-etl-weather-data-pipeline--openweather-api-to-ms-sql-server)
   - [📦 Project Structure](#-project-structure)
   - [🚀 How It Works](#-how-it-works)
+  - [📊 Data Flow Diagram](#-data-flow-diagram)
   - [🚀 Quick Start](#-quick-start)
   - [🔧 Setup Instructions](#-setup-instructions)
     - [🐍 1. Python Environment](#-1-python-environment)
@@ -25,7 +26,6 @@ This project demonstrates a full ETL (Extract, Transform, Load) pipeline that co
     - [2. Start Airflow Standalone](#2-start-airflow-standalone)
     - [3. Add the DAG File](#3-add-the-dag-file)
     - [4. Enable and Trigger the DAG](#4-enable-and-trigger-the-dag)
-  - [📊 Data Flow Diagram](#-data-flow-diagram)
   - [🔄 Extending the Pipeline](#-extending-the-pipeline)
     - [Adding New Cities](#adding-new-cities)
     - [Integrating Additional APIs](#integrating-additional-apis)
@@ -40,17 +40,21 @@ This project demonstrates a full ETL (Extract, Transform, Load) pipeline that co
 
 ## 📦 Project Structure
 
-etl_weather/
+```plaintext
+ETL Python Project
 ├── extract/
-│ └── get_weather_json.py # Extracts data from OpenWeather API
-├── transform/
-│ └── clean_json_weather.py # Cleans and flattens JSON data
+│   ├── get_weather_json.py       # Extracts data from OpenWeather API
 ├── load/
-│ └── load_to_msserver.py # Loads cleaned data into MS SQL Server
+│   ├── load_to_msserver.py       # Loads cleaned data into MS SQL Server
+├── transform/
+│   ├── clean_json_weather.py     # Cleans and flattens JSON data
 ├── scripts/
-│ └── run_etl_pipeline.py # Orchestration: runs extract, transform, load
-├── .env # Environment variables (not tracked in Git)
-├── requirements.txt # Python dependencies
+│   └── setup_database.py         # Initializes database and table
+├── run_etl_pipeline.py           # Orchestration: runs extract, transform, load
+├── requirements.txt              # Python dependencies
+├── README.md                     # Project documentation
+└── .env                          # Environment variables (not tracked in Git)
+```
 
 ---
 
@@ -67,6 +71,17 @@ etl_weather/
 
 4. **Orchestration**  
    `run_etl_pipeline.py` ties all steps together and runs the full ETL pipeline.
+
+---
+
+## 📊 Data Flow Diagram
+
+```mermaid
+graph TD
+    A[OpenWeatherMap API] -->|Extract| B[JSON Files]
+    B -->|Transform| C[Cleaned DataFrame]
+    C -->|Load| D[SQL Server Database]
+```
 
 ---
 
@@ -290,17 +305,6 @@ The DAG (Directed Acyclic Graph) file defines the workflow for your ETL pipeline
 1. In the Airflow UI, locate the `etl_pipeline` DAG.
 2. Toggle the switch to enable it.
 3. Trigger the DAG manually or let it run on schedule.
-
----
-
-## 📊 Data Flow Diagram
-
-```mermaid
-graph TD
-    A[OpenWeatherMap API] -->|Extract| B[JSON Files]
-    B -->|Transform| C[Cleaned DataFrame]
-    C -->|Load| D[SQL Server Database]
-```
 
 ---
 
